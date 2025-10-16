@@ -1,0 +1,715 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contabilidade I - Guia Passo a Passo</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Ubuntu:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Ubuntu', sans-serif;
+            background: linear-gradient(135deg, #000000 0%, #1a1a1a 25%, #2d4a3e 50%, #3d5a4d 75%, #4d6a5d 100%);
+            min-height: 100vh;
+            padding: 40px 20px;
+            color: #e0e0e0;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        h1 {
+            text-align: center;
+            font-size: 3rem;
+            font-weight: 700;
+            margin-bottom: 20px;
+            color: #ffff00;
+            text-shadow: 0 0 20px rgba(255, 255, 0, 0.5), 0 0 40px rgba(255, 255, 0, 0.3);
+            animation: glow 2s ease-in-out infinite alternate;
+        }
+
+        @keyframes glow {
+            from {
+                text-shadow: 0 0 20px rgba(255, 255, 0, 0.5), 0 0 40px rgba(255, 255, 0, 0.3);
+            }
+            to {
+                text-shadow: 0 0 30px rgba(255, 255, 0, 0.8), 0 0 60px rgba(255, 255, 0, 0.5);
+            }
+        }
+
+        .subtitle {
+            text-align: center;
+            font-size: 1.2rem;
+            font-weight: 300;
+            margin-bottom: 50px;
+            color: #a8d5ba;
+        }
+
+        .card {
+            background: rgba(77, 106, 93, 0.15);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 1px solid rgba(168, 213, 186, 0.2);
+            border-radius: 20px;
+            margin-bottom: 20px;
+            overflow: hidden;
+            transition: all 0.3s ease;
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 12px 40px 0 rgba(255, 255, 0, 0.2);
+            border-color: rgba(255, 255, 0, 0.4);
+        }
+
+        .card-header {
+            padding: 25px 30px;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: rgba(45, 74, 62, 0.3);
+            transition: all 0.3s ease;
+        }
+
+        .card-header:hover {
+            background: rgba(45, 74, 62, 0.5);
+        }
+
+        .card-title {
+            font-size: 1.5rem;
+            font-weight: 500;
+            color: #ffff00;
+            text-shadow: 0 0 10px rgba(255, 255, 0, 0.3);
+        }
+
+        .card-icon {
+            width: 30px;
+            height: 30px;
+            border: 2px solid #ffff00;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+            box-shadow: 0 0 10px rgba(255, 255, 0, 0.5);
+        }
+
+        .card-icon::after {
+            content: '+';
+            font-size: 1.5rem;
+            color: #ffff00;
+            font-weight: 300;
+            transition: all 0.3s ease;
+        }
+
+        .card.active .card-icon {
+            transform: rotate(45deg);
+        }
+
+        .card-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.5s ease;
+        }
+
+        .card-content-inner {
+            padding: 30px;
+            background: rgba(0, 0, 0, 0.2);
+        }
+
+        .card.active .card-content {
+            max-height: 2000px;
+        }
+
+        .step-path {
+            font-size: 1.1rem;
+            font-weight: 500;
+            color: #a8d5ba;
+            margin-bottom: 15px;
+            padding: 10px 15px;
+            background: rgba(168, 213, 186, 0.1);
+            border-left: 3px solid #ffff00;
+            border-radius: 5px;
+        }
+
+        .step-item {
+            font-size: 1rem;
+            color: #e0e0e0;
+            margin-bottom: 10px;
+            padding-left: 20px;
+            position: relative;
+            line-height: 1.6;
+        }
+
+        .step-item::before {
+            content: '▸';
+            position: absolute;
+            left: 0;
+            color: #ffff00;
+            font-weight: bold;
+        }
+
+        .tutorial-btn {
+            display: inline-block;
+            margin-top: 20px;
+            padding: 12px 30px;
+            background: linear-gradient(135deg, #ffff00 0%, #ffcc00 100%);
+            color: #000;
+            text-decoration: none;
+            border-radius: 25px;
+            font-weight: 500;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            border: none;
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(255, 255, 0, 0.4);
+        }
+
+        .tutorial-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 6px 20px rgba(255, 255, 0, 0.6);
+            background: linear-gradient(135deg, #ffff33 0%, #ffdd00 100%);
+        }
+
+        .popup-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.85);
+            backdrop-filter: blur(5px);
+            z-index: 1000;
+            animation: fadeIn 0.3s ease;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+
+        .popup-overlay.active {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .popup-content {
+            position: relative;
+            width: 95%;
+            height: 95%;
+            background: rgba(26, 26, 26, 0.95);
+            border-radius: 20px;
+            border: 2px solid rgba(255, 255, 0, 0.5);
+            box-shadow: 0 0 50px rgba(255, 255, 0, 0.3);
+            overflow: hidden;
+            animation: slideUp 0.4s ease;
+        }
+
+        @keyframes slideUp {
+            from {
+                transform: translateY(50px);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        .popup-header {
+            padding: 20px 30px;
+            background: rgba(45, 74, 62, 0.5);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid rgba(255, 255, 0, 0.3);
+        }
+
+        .popup-title {
+            color: #ffff00;
+            font-size: 1.3rem;
+            font-weight: 500;
+        }
+
+        .close-btn {
+            width: 40px;
+            height: 40px;
+            border: 2px solid #ffff00;
+            border-radius: 50%;
+            background: transparent;
+            color: #ffff00;
+            font-size: 1.5rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .close-btn:hover {
+            background: #ffff00;
+            color: #000;
+            transform: rotate(90deg);
+        }
+
+        .popup-iframe {
+            width: 100%;
+            height: calc(100% - 80px);
+            border: none;
+        }
+
+        .section-divider {
+            margin: 30px 0;
+            padding: 15px;
+            background: rgba(168, 213, 186, 0.1);
+            border-radius: 10px;
+            border-left: 4px solid #ffff00;
+        }
+
+        .section-title {
+            font-size: 1.2rem;
+            font-weight: 500;
+            color: #a8d5ba;
+            margin-bottom: 10px;
+        }
+
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2rem;
+            }
+
+            .card-title {
+                font-size: 1.2rem;
+            }
+
+            .card-header {
+                padding: 20px;
+            }
+
+            .card-content-inner {
+                padding: 20px;
+            }
+
+            .popup-content {
+                width: 98%;
+                height: 98%;
+            }
+        }
+
+        .scroll-to-top {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(135deg, #ffff00 0%, #ffcc00 100%);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            opacity: 0;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(255, 255, 0, 0.4);
+            z-index: 999;
+        }
+
+        .scroll-to-top.visible {
+            opacity: 1;
+        }
+
+        .scroll-to-top:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 6px 20px rgba(255, 255, 0, 0.6);
+        }
+
+        .scroll-to-top::after {
+            content: '↑';
+            font-size: 1.5rem;
+            color: #000;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Contabilidade I</h1>
+        <p class="subtitle">Guia Completo de Procedimentos Contábeis</p>
+
+        <div class="card" data-card="1">
+            <div class="card-header">
+                <h2 class="card-title">IMPORTA PERFIS DE EMPRESAS</h2>
+                <div class="card-icon"></div>
+            </div>
+            <div class="card-content">
+                <div class="card-content-inner">
+                    <div class="step-path">//CONTROLE/EMPRESAS</div>
+                    <div class="step-item">Clicar em [ importação ]</div>
+                    <div class="step-item">Selecionar a opção "conforme cadastro de perfis de empresas" no campo Dados a serem importados</div>
+                    <div class="step-item">Clicar no campo Perfil e pressionar F2</div>
+                    <div class="step-item">Importar o perfil de acordo com regime tributário e contabilização de clientes e fornecedores</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="card" data-card="2">
+            <div class="card-header">
+                <h2 class="card-title">RELATÓRIO DO PLANO DE CONTAS</h2>
+                <div class="card-icon"></div>
+            </div>
+            <div class="card-content">
+                <div class="card-content-inner">
+                    <div class="step-path">//RELATÓRIOS/CADASTRAIS/CONTAS</div>
+                    <div class="step-item">Marcar opção "Destacar contas sintéticas" e "Destacar linhas"</div>
+                    <button class="tutorial-btn" onclick="openPopup('https://suporte.dominioatendimento.com/central/faces/solucao.html?codigo=44&palavraChave=relat%C3%B3rio%20plano%20de%20contas&modulosSelecionados=1&intencaoID=0')">[ Tutorial ]</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="card" data-card="3">
+            <div class="card-header">
+                <h2 class="card-title">CADASTRAR CONTAS</h2>
+                <div class="card-icon"></div>
+            </div>
+            <div class="card-content">
+                <div class="card-content-inner">
+                    <div class="step-path">PRESSIONAR F4</div>
+                    <div class="step-item">Selecionar a última conta do grupo a ser cadastrado</div>
+                    <div class="step-item">Pressionar CTRL + A</div>
+                    <div class="step-item">Informar o código entre 750 e 9999</div>
+                    <div class="step-item">Informar o nome da conta</div>
+                    <div class="step-item">Informar a data de cadastro da conta</div>
+                    <button class="tutorial-btn" onclick="openPopup('https://suporte.dominioatendimento.com/central/faces/solucao.html?codigo=43&palavraChave=como%20cadastrar%20conta%20cont%C3%A1bil&modulosSelecionados=0&intencaoID=0')">[ Tutorial ]</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="card" data-card="4">
+            <div class="card-header">
+                <h2 class="card-title">ALTERAR CONTAS</h2>
+                <div class="card-icon"></div>
+            </div>
+            <div class="card-content">
+                <div class="card-content-inner">
+                    <div class="step-path">//ARQUIVOS/CONTAS CONTÁBEIS</div>
+                    <div class="step-item">Pressionar EDITAR</div>
+                    <div class="step-item">Pressionar F2</div>
+                    <div class="step-item">Selecionar a conta</div>
+                    <div class="step-item">Alterar o campo desejado e gravar</div>
+                    <button class="tutorial-btn" onclick="openPopup('https://suporte.dominioatendimento.com/central/faces/solucao.html?codigo=43&palavraChave=como%20cadastrar%20conta%20cont%C3%A1bil&modulosSelecionados=0&intencaoID=0')">[ Tutorial ]</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="card" data-card="5">
+            <div class="card-header">
+                <h2 class="card-title">EXCLUIR CONTAS</h2>
+                <div class="card-icon"></div>
+            </div>
+            <div class="card-content">
+                <div class="card-content-inner">
+                    <div class="step-path">//ARQUIVOS/CONTAS CONTÁBEIS</div>
+                    <div class="step-item">Pressionar EDITAR</div>
+                    <div class="step-item">Pressionar F2</div>
+                    <div class="step-item">Selecionar a conta</div>
+                    <div class="step-item">Clicar com botão direito sobre a conta</div>
+                    <div class="step-item">Selecionar opção "Excluir Registro"</div>
+                    <button class="tutorial-btn" onclick="openPopup('https://suporte.dominioatendimento.com/central/faces/solucao.html?codigo=52&palavraChave=excluir%20conta&modulosSelecionados=0&intencaoID=0')">[ Tutorial ]</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="card" data-card="6">
+            <div class="card-header">
+                <h2 class="card-title">REPLICAR CONTAS</h2>
+                <div class="card-icon"></div>
+            </div>
+            <div class="card-content">
+                <div class="card-content-inner">
+                    <div class="step-path">//ARQUIVOS/CONTAS CONTÁBEIS</div>
+                    <div class="step-item">Pressionar EDITAR</div>
+                    <div class="step-item">Pressionar F2</div>
+                    <div class="step-item">Selecionar a conta</div>
+                    <div class="step-item">Clicar em Replicar</div>
+                    <div class="step-item">Selecionar as empresas</div>
+                    <div class="step-item">Clicar em Replicar</div>
+                    <button class="tutorial-btn" onclick="openPopup('https://suporte.dominioatendimento.com/central/faces/solucao.html?codigo=48&palavraChave=replicar%20conta%20cont%C3%A1bil&modulosSelecionados=0&intencaoID=0')">[ Tutorial ]</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="card" data-card="7">
+            <div class="card-header">
+                <h2 class="card-title">CADASTRAR HISTÓRICOS</h2>
+                <div class="card-icon"></div>
+            </div>
+            <div class="card-content">
+                <div class="card-content-inner">
+                    <div class="step-path">//ARQUIVOS/HISTÓRICOS</div>
+                    <div class="step-item">Clicar em NOVO</div>
+                    <div class="step-item">Cadastrar histórico</div>
+                    <button class="tutorial-btn" onclick="openPopup('https://suporte.dominioatendimento.com/central/faces/solucao.html?codigo=1760&palavraChave=cadastrar%20hist%C3%B3rico&modulosSelecionados=0&intencaoID=0')">[ Tutorial ]</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="card" data-card="8">
+            <div class="card-header">
+                <h2 class="card-title">LANÇAMENTOS CONTÁBEIS MANUAIS</h2>
+                <div class="card-icon"></div>
+            </div>
+            <div class="card-content">
+                <div class="card-content-inner">
+                    <div class="step-path">//MOVIMENTOS/LANÇAMENTOS</div>
+                    <div class="step-item">Informar a data do lançamento</div>
+                    <div class="step-item">Informar o tipo do lançamento</div>
+                    <div class="step-item">Informar conta débito via F2</div>
+                    <div class="step-item">Informar a conta crédito via F2</div>
+                    <div class="step-item">Informar o histórico via F2</div>
+                    <div class="step-item">Gravar</div>
+                    <button class="tutorial-btn" onclick="openPopup('https://suporte.dominioatendimento.com/central/faces/solucao.html?codigo=1278&palavraChave=Como%20fazer%20Lan%C3%A7amento%20Cont%C3%A1bil?&modulosSelecionados=0&intencaoID=0')">[ Tutorial ]</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="card" data-card="9">
+            <div class="card-header">
+                <h2 class="card-title">BALANÇO DE ABERTURA</h2>
+                <div class="card-icon"></div>
+            </div>
+            <div class="card-content">
+                <div class="card-content-inner">
+                    <div class="step-path">//MOVIMENTOS/LANÇAMENTOS</div>
+                    <div class="step-item">Informe a data 31/12/XXXX</div>
+                    <div class="step-item">Informe o tipo "vários débitos para vários créditos"</div>
+                    <div class="step-item">Clique em Incluir</div>
+                    <div class="step-item" style="padding-left: 40px;">Informe o código da conta</div>
+                    <div class="step-item" style="padding-left: 40px;">Informe o saldo</div>
+                    <div class="step-item" style="padding-left: 40px;">Informe o histórico</div>
+                    <button class="tutorial-btn" onclick="openPopup('https://suporte.dominioatendimento.com/central/faces/solucao.html?codigo=6611&palavraChave=balan%C3%A7o%20de%20abertura&modulosSelecionados=0&intencaoID=0')">[ Tutorial ]</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="card" data-card="10">
+            <div class="card-header">
+                <h2 class="card-title">RELATÓRIOS PRINCIPAIS</h2>
+                <div class="card-icon"></div>
+            </div>
+            <div class="card-content">
+                <div class="card-content-inner">
+                    <div class="section-divider">
+                        <div class="section-title">DIÁRIO</div>
+                        <div class="step-path">//RELATÓRIOS/DIÁRIO</div>
+                        <button class="tutorial-btn" onclick="openPopup('https://suporte.dominioatendimento.com/central/faces/solucao.html?codigo=1811&palavraChave=EMITIR%20DI%C3%81RIO&modulosSelecionados=0&intencaoID=0')">[ Tutorial ]</button>
+                    </div>
+
+                    <div class="section-divider">
+                        <div class="section-title">RAZÃO</div>
+                        <div class="step-path">//RELATÓRIOS/RAZÃO</div>
+                        <button class="tutorial-btn" onclick="openPopup('https://suporte.dominioatendimento.com/central/faces/solucao.html?codigo=1817&palavraChave=EMITIR%20RAZ%C3%83O&modulosSelecionados=0&intencaoID=0')">[ Tutorial ]</button>
+                    </div>
+
+                    <div class="section-divider">
+                        <div class="section-title">BALANCETE</div>
+                        <div class="step-path">//RELATÓRIOS/BALANCETE</div>
+                        <button class="tutorial-btn" onclick="openPopup('https://suporte.dominioatendimento.com/central/faces/solucao.html?codigo=1809&palavraChave=EMITIR%20BALANCETE&modulosSelecionados=0&intencaoID=0')">[ Tutorial ]</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="card" data-card="11">
+            <div class="card-header">
+                <h2 class="card-title">ENCERRAMENTO</h2>
+                <div class="card-icon"></div>
+            </div>
+            <div class="card-content">
+                <div class="card-content-inner">
+                    <div class="section-divider">
+                        <div class="section-title">ZERAMENTO</div>
+                        <div class="step-path">//Utilitários/Zeramento</div>
+                        <div class="step-item">Informe a data</div>
+                        <div class="step-item">Informe o histórico 190</div>
+                        <div class="step-item">Clique em GERAR</div>
+                        <button class="tutorial-btn" onclick="openPopup('https://suporte.dominioatendimento.com/central/faces/solucao.html?codigo=45&palavraChave=zeramento&modulosSelecionados=0&intencaoID=0')">[ Tutorial ]</button>
+                    </div>
+
+                    <div class="section-divider">
+                        <div class="section-title">Para excluir o zeramento</div>
+                        <div class="step-path">//utilitários/exclusão/lançamentos</div>
+                        <div class="step-item">Informar a data do zeramento</div>
+                        <div class="step-item">Selecionar o TIPO "Zeramento"</div>
+                        <div class="step-item">Clicar em "Excluir"</div>
+                        <div class="step-item">Selecionar a opção "transferência lucro/prejuízo"</div>
+                        <div class="step-item">Clicar em Excluir</div>
+                        <button class="tutorial-btn" onclick="openPopup('https://suporte.dominioatendimento.com/central/faces/solucao.html?codigo=41&palavraChave=zeramento&modulosSelecionados=0&intencaoID=0')">[ Tutorial ]</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="card" data-card="12">
+            <div class="card-header">
+                <h2 class="card-title">BALANÇO</h2>
+                <div class="card-icon"></div>
+            </div>
+            <div class="card-content">
+                <div class="card-content-inner">
+                    <div class="step-path">//RELATÓRIOS/BALANÇO</div>
+                    <button class="tutorial-btn" onclick="openPopup('https://suporte.dominioatendimento.com/central/faces/solucao.html?codigo=2093&palavraChave=BALAN%C3%87O&modulosSelecionados=0&intencaoID=0')">[ Tutorial ]</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="card" data-card="13">
+            <div class="card-header">
+                <h2 class="card-title">DEMONSTRATIVOS</h2>
+                <div class="card-icon"></div>
+            </div>
+            <div class="card-content">
+                <div class="card-content-inner">
+                    <div class="section-divider">
+                        <div class="section-title">DRE</div>
+                        <div class="step-path">//RELATÓRIOS/DEMONSTRATIVOS/DRE</div>
+                        <button class="tutorial-btn" onclick="openPopup('https://suporte.dominioatendimento.com/central/faces/solucao.html?codigo=10836&palavraChave=DRE&modulosSelecionados=0&intencaoID=0')">[ Tutorial ]</button>
+                    </div>
+
+                    <div class="section-divider">
+                        <div class="section-title">DMPL</div>
+                        <div class="step-path">//RELATÓRIOS/DEMONSTRATIVOS/DMPL</div>
+                        <button class="tutorial-btn" onclick="openPopup('https://suporte.dominioatendimento.com/central/faces/solucao.html?codigo=248&palavraChave=DMPL&modulosSelecionados=0&intencaoID=0')">[ Tutorial ]</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="card" data-card="14">
+            <div class="card-header">
+                <h2 class="card-title">ALTERAR LANÇAMENTOS EM LOTE</h2>
+                <div class="card-icon"></div>
+            </div>
+            <div class="card-content">
+                <div class="card-content-inner">
+                    <div class="step-path">//UTILITÁRIOS/ALTERAÇÃO DE LANÇAMENTOS</div>
+                    <button class="tutorial-btn" onclick="openPopup('https://suporte.dominioatendimento.com/central/faces/solucao.html?codigo=59&palavraChave=ALTERA%C3%87%C3%83O%20DE%20LAN%C3%87AMENTOS&modulosSelecionados=0&intencaoID=0')">[ Tutorial ]</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="card" data-card="15">
+            <div class="card-header">
+                <h2 class="card-title">BLOQUEAR PERÍODO</h2>
+                <div class="card-icon"></div>
+            </div>
+            <div class="card-content">
+                <div class="card-content-inner">
+                    <div class="step-path">//CONTROLE/FECHAMENTO</div>
+                    <div class="step-item">Informar a data de bloqueio</div>
+                    <button class="tutorial-btn" onclick="openPopup('https://suporte.dominioatendimento.com/central/faces/solucao.html?codigo=58&palavraChave=bloquear%20per%C3%ADodo%20contabilidade&modulosSelecionados=0&intencaoID=0')">[ Tutorial ]</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="scroll-to-top" id="scrollToTop"></div>
+
+    <div class="popup-overlay" id="popupOverlay">
+        <div class="popup-content">
+            <div class="popup-header">
+                <div class="popup-title">Tutorial</div>
+                <button class="close-btn" onclick="closePopup()">×</button>
+            </div>
+            <iframe class="popup-iframe" id="popupIframe" src=""></iframe>
+        </div>
+    </div>
+
+    <script>
+        // Toggle card expansion
+        document.querySelectorAll('.card-header').forEach(header => {
+            header.addEventListener('click', function() {
+                const card = this.parentElement;
+                const isActive = card.classList.contains('active');
+                
+                // Close all cards
+                document.querySelectorAll('.card').forEach(c => {
+                    c.classList.remove('active');
+                });
+                
+                // Open clicked card if it wasn't active
+                if (!isActive) {
+                    card.classList.add('active');
+                }
+            });
+        });
+
+        // Open popup with tutorial link
+        function openPopup(url) {
+            const overlay = document.getElementById('popupOverlay');
+            const iframe = document.getElementById('popupIframe');
+            iframe.src = url;
+            overlay.classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+
+        // Close popup
+        function closePopup() {
+            const overlay = document.getElementById('popupOverlay');
+            const iframe = document.getElementById('popupIframe');
+            overlay.classList.remove('active');
+            iframe.src = '';
+            document.body.style.overflow = 'auto';
+        }
+
+        // Close popup when clicking outside
+        document.getElementById('popupOverlay').addEventListener('click', function(e) {
+            if (e.target === this) {
+                closePopup();
+            }
+        });
+
+        // Close popup with ESC key
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                closePopup();
+            }
+        });
+
+        // Scroll to top functionality
+        const scrollToTopBtn = document.getElementById('scrollToTop');
+
+        window.addEventListener('scroll', function() {
+            if (window.pageYOffset > 300) {
+                scrollToTopBtn.classList.add('visible');
+            } else {
+                scrollToTopBtn.classList.remove('visible');
+            }
+        });
+
+        scrollToTopBtn.addEventListener('click', function() {
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+        });
+    </script>
+</body>
+</html>
+
